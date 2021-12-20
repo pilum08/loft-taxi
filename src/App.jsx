@@ -5,6 +5,7 @@ import { Profile } from "./pages/Profile";
 import { Map } from "./pages/Map";
 import { Login } from "./pages/Login";
 import {Header}  from "./components/Header"
+import  {Registration} from './pages/Registration'
 
 class App extends React.Component {
   state={currentPage:'map'}
@@ -18,8 +19,9 @@ class App extends React.Component {
     <Header navigate={this.navigateTo}/>
           <section>
             {this.state.currentPage==='map'&&<Map/>}
-            {this.state.currentPage==='login'&&<Login/>}
+            {this.state.currentPage==='login'&&<Login navigate={this.navigateTo}/>}
             {this.state.currentPage==='profile'&&<Profile/>}
+            {this.state.currentPage==='registration'&&<Registration navigate={this.navigateTo}/>}
           </section>
         </main>
     )

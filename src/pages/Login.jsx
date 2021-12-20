@@ -1,7 +1,11 @@
 import React from 'react'
-export const Login=()=>{
+import Logo from '../assets/Logo.svg'
+export const Login=({navigate})=>{
     return (
         <div className="sign-up">
+             <div className="logo" style={{backgroundImage:`url(${Logo})`}}>
+                <div className="logo__text">LoftTaxi</div>
+            </div>
             <h1 className='sign-up__title'>Регистрация</h1>
         <form className='sign-up__form'>
         <label htmlFor="email">Email*:</label>
@@ -15,6 +19,10 @@ export const Login=()=>{
         <div className="sign-up__sing-in">
             <p className='sign-up__title' >Уже зарегестрированы?</p>
             <a className='sign-up__link' href="#">Войти</a>
+        </div>
+        <div className="sing-up__footer">
+            <span className='sing-up__footer-text'>Новый пользователь?</span>
+            <button className='sing-up__footer-btn' onClick={()=>navigate('registration')}>Зарегистрируйтесь</button>
         </div>
         </div>
         
