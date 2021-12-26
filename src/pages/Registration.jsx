@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from '../assets/Logo.svg'
-export const Registration=()=>{
+export const Registration=({navigate})=>{
     return(
         <div className="registration">
             <div className="logo" style={{backgroundImage:`url(${Logo})`}}>
@@ -17,7 +17,7 @@ export const Registration=()=>{
                     <button className="btn">Зарегистрироваться</button>
                     <div className="registration__footer">
                         <span>Уже зарегистрирован?</span>
-                        <button>Войти</button>
+                        <button onClick={()=>navigate('login')}>Войти</button>
                     </div>
                 </form>
             </div>
