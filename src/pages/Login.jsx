@@ -4,8 +4,7 @@ import {PropTypes} from 'prop-types'
 import { withAuth } from '../Context'
 
 export class Login extends Component {
-    goToMap = (event) => {
-        event.preventDefault();
+    goToMap = () => {
         this.props.navigate("map");
       }
       goToReg = (event) => {
@@ -14,10 +13,8 @@ export class Login extends Component {
       }
       authenticate = (event) => {
         event.preventDefault();
-        console.log(21212);
-        const { email, password } = event.target;
-        this.props.logIn(email.value, password.value);
-        
+        const { userName, password } = event.target;
+        this.props.logIn(userName.value, password.value);
       }
     
       render() {
@@ -29,9 +26,7 @@ export class Login extends Component {
                 </div>
                 <h1 className='sign-up__title'>Войти</h1>
                {this.props.isLoggedIn ? (
-                     <button onClick={this.goToProfile}>
-                     go to profile
-                   </button>
+                    this.goToMap()
                   
                ) : (
                 <form onSubmit={this.authenticate} className='sign-up__form'>

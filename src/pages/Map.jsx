@@ -17,8 +17,13 @@ export class Map extends Component {
         this.map.remove()
     }
     render(){
-        return <div className='map'>
+        return (
+            <>
+             <div className='map'>
            <div data-testid='map' className="map__container" ref={this.mapContainer}/>
         </div>
+            </>
+           
+        ) 
     }
 }

@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types';
 
 
 export class Header extends Component {
+  state={currentPage:'login'}
+  navigateTo=(page)=>{
+    this.setState({currentPage:page})
+  }
   goToMap = (event) => {
     event.preventDefault();
     this.props.navigate("map");
@@ -40,6 +45,7 @@ export class Header extends Component {
       </header>
     )
   }
-  
-
+}
+Header.propTypes={
+  navigate: PropTypes.func
 }
