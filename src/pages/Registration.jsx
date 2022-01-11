@@ -1,6 +1,8 @@
+
 import React from "react";
 import Logo from '../assets/Logo.svg'
-export const Registration=({navigate})=>{
+import { Link } from 'react-router-dom'
+export const Registration=()=>{
     return(
         <div className="registration">
             <div className="logo" style={{backgroundImage:`url(${Logo})`}}>
@@ -17,7 +19,7 @@ export const Registration=({navigate})=>{
                     <button className="btn">Зарегистрироваться</button>
                     <div className="registration__footer">
                         <span>Уже зарегистрирован?</span>
-                        <button onClick={()=>navigate('login')}>Войти</button>
+                        <Link to='/'>Войти</Link>
                     </div>
                 </form>
             </div>

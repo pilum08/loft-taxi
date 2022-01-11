@@ -1,30 +1,26 @@
 
 import React from 'react'
 import './App.scss';
-import { Map } from "./pages/Map";
-import {Header}  from "./components/Header"
+import { Map } from "./pages/Map"
 import  {Registration} from './pages/Registration'
 import {LoginWithAuth} from './pages/Login'
-import {withAuth} from './Context'
-import {ProfileWithAuth} from './pages/Profile'
-import PropTypes from 'prop-types';
+import {ProfileWithConnect} from './pages/Profile'
+import {Route, Routes } from "react-router-dom"
+import { connect } from "react-redux"
+import PropTypes from 'prop-types'
+
 
 class App extends React.Component {
-  state={currentPage:'login'}
-  navigateTo=(page)=>{
-    this.setState({currentPage:page})
-  }
   render() {
     return (
     
     <main >
-    <Header navigate={this.navigateTo}/>
-          <section>
-            {this.state.currentPage==='map'&&<Map/>}
-            {this.state.currentPage==='login'&&<LoginWithAuth navigate={this.navigateTo}/>}
-            {this.state.currentPage==='profile'&&<ProfileWithAuth/>}
-            {this.state.currentPage==='registration'&&<Registration navigate={this.navigateTo}/>}
-          </section>
+      <Routes>
+        <Route path='/' element={<LoginWithAuth/>}/>
+        <Route path='profile' element={<ProfileWithConnect/>}/>
+        <Route path='map' element={<Map/>}/>
+        <Route path='registration' element={<Registration/>}/> 
+      </Routes>
         </main>
     )
   }
@@ -34,4 +30,4 @@ App.propTypes={
   isLoggedIn: PropTypes.bool
 }
 
-export default withAuth(App);
+export default connect((state) => ({ isLoggedIn: state.auth.isLoggedIn }))(App);

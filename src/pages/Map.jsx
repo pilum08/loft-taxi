@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import mapboxgl from 'mapbox-gl'
+import { Header } from '../components/Header'
 
 export class Map extends Component {
     map=null
@@ -19,6 +20,7 @@ export class Map extends Component {
     render(){
         return (
             <>
+            <Header/>
              <div className='map'>
            <div data-testid='map' className="map__container" ref={this.mapContainer}/>
         </div>
