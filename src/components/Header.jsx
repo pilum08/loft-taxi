@@ -1,28 +1,31 @@
 import React from 'react'
-export const Header=(props)=>{
-  return (
-    <header>
-      <nav>
-      <ul>
-        <li>
-          <button onClick={()=>{props.navigate('map')}}>
-            Карта
-          </button>
-        </li>
-        
-        <li>
-          <button onClick={()=>{props.navigate('profile')}}>
-            Профиль
-          </button>
-        </li>
-        <li>
-          <button onClick={()=>{props.navigate('login')}}>
-            Выйти
-          </button>
-        </li>
-      </ul>
-      </nav>
-    </header>
-  )
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-}
+  export const Header =()=> {
+  
+    
+      return (
+        <header>
+          <nav>
+          <ul>
+            <li>
+              <Link to='/map'>Карта</Link>
+            </li>
+            
+            <li>
+              <Link to='/profile'>Профиль</Link>
+            </li>
+            <li>
+             <Link to='/'>Выйти</Link>
+            </li>
+          </ul>
+          </nav>
+        </header>
+      )
+     
+    }
+    Header.propTypes={
+      navigate: PropTypes.func
+    }
+    

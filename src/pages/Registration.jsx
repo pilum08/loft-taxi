@@ -1,5 +1,7 @@
+
 import React from "react";
 import Logo from '../assets/Logo.svg'
+import { Link } from 'react-router-dom'
 export const Registration=()=>{
     return(
         <div className="registration">
@@ -17,7 +19,7 @@ export const Registration=()=>{
                     <button className="btn">Зарегистрироваться</button>
                     <div className="registration__footer">
                         <span>Уже зарегистрирован?</span>
-                        <button>Войти</button>
+                        <Link to='/'>Войти</Link>
                     </div>
                 </form>
             </div>
