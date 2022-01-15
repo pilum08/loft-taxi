@@ -3,7 +3,7 @@ import Logo from '../assets/Logo.svg'
 import {PropTypes} from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { authenticate } from '../actions'
+import { authenticate } from '../store/actions'
 
 
 export class Login extends Component {

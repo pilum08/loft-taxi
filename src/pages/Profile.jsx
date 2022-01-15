@@ -1,7 +1,8 @@
 import React, { Component } from "react"
-import {logIn, logOut} from '../actions'
+import {logIn, logOut} from '../store/actions'
 import {connect} from 'react-redux'
 import { Header } from "../components/Header"
+import { ProfileFormWithAuth } from "../components/profileForm"
 
 export class Profile extends Component {
   unauthenticate = (event) => {
@@ -15,11 +16,7 @@ export class Profile extends Component {
     return (
         <>
       <Header/>
-      <p>
-        Профиль
-        <button onClick={this.unauthenticate}>Выйти</button>
-        
-      </p>
+      <ProfileFormWithAuth/>
         </>
       
     );
