@@ -1,22 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+
+import initStore from './store';
 import App from './App';
-import {BrowserRouter} from 'react-router-dom'
-import { Provider } from "react-redux";
-import { store } from './store/store'
 
+import './styles/index.css';
+import { theme } from 'loft-taxi-mui-theme';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
+const store = initStore();
+store.subscribe(() => {
+  const state = store.getState();
+  sessionStorage.loftTaxi = state.user.isLoggedIn ? JSON.stringify(state) : '';
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
+  <BrowserRouter>
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
         <App />
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
+      </MuiThemeProvider>
+    </Provider>{' '}
+  </BrowserRouter>,
+  document.getElementById('root')
 );
 
 

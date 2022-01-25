@@ -1,139 +1,142 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { saveCard, getCard } from '../store/actions'
+import { loadProfile, updateProfile } from '../modules/user'
+import { useForm } from 'react-hook-form'
 
-export class ProfileForm extends Component {
-    state = {
-        cardName: this.props.cardName,
-        cardNumber: this.props.cardNumber,
-        expiryDate: this.props.expiryDate,
-        cvc: this.props.cvc
+import { Grid, Container, Button, TextField } from '@material-ui/core'
+import { MCIcon } from 'loft-taxi-mui-theme'
+
+const ProfileForm = ({
+    loadProfile,
+    updateProfile,
+    card,
+    error,
+    loading
+  }) => {
+    useEffect(() => {
+      loadProfile();
+    });
+  
+    const handleForm = ({ cardInput, expiresInput, holderInput, cvcInput }) => {
+      updateProfile({
+        cardNumber: cardInput,
+        expiryDate: expiresInput,
+        cardName: holderInput,
+        cvc: cvcInput
+      });
     };
-
-    static propTypes = {
-        getCard: PropTypes.func.isRequired,
-        saveCard: PropTypes.func.isRequired
-    }
-
-    handleChangeCardName = (e) => {
-        this.setState({cardName: e.target.value});
-    }
-
-    handleChangeCardNumber = (e) => {
-        this.setState({cardNumber: e.target.value});
-    }
-
-    handleChangeExpiryDate = (e) => {
-        this.setState({expiryDate: e.target.value});
-    }
-
-    handleChangeCvc = (e) => {
-        this.setState({cvc: e.target.value});
-    }
-
-    componentDidMount() {
-        this.props.getCard();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.cardName !== this.props.cardName ||
-            nextProps.cardNumber !== this.props.cardNumber ||
-            nextProps.expiryDate !== this.props.expiryDate ||
-            nextProps.cvc !== this.props.cvc) {
-          this.setState({
-            cardName: nextProps.cardName,
-            cardNumber: nextProps.cardNumber,
-            expiryDate: nextProps.expiryDate,
-            cvc: nextProps.cvc
-          });
-        }
+  
+  
+  
+    const { registration, handleSubmit, errors } = useForm({
+      
+      defaultValues: {
+        cardInput: card.cardNumber,
+        expiresInput: card.expiryDate,
+        holderInput: card.cardName,
+        cvcInput: card.cvc
       }
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-
-        const cardNumber = e.target.cardNumber ? e.target.cardNumber.value : null;
-        const cardName = e.target.cardName ? e.target.cardName.value : null;
-        const expiryDate = e.target.expiryDate ? e.target.expiryDate.value : null;
-        const cvc = e.target.cvc ? e.target.cvc.value : null;
-
-        this.props.saveCard(cardNumber, cardName, expiryDate, cvc);
-    }
-
-    render() {
-        return (
-            <div data-testid="profile-form" className="profile-form">
-                <form className="profile-form__form" onSubmit={this.handleSubmit}>
-                    <h2 className="profile-form__title">Профиль</h2>
-                    <h5 className="profile-form__subtitle">Введите платежные данные</h5>
-                    <div className="profile-form__columns">
-                        <div className="profile-form__column profile-form__column_left">
-                            <div className="profile-form__field">
-                                <span className="profile-form__field-name">
-                                    Имя владельца
-                                </span>
-                                <input name="cardName" type="text" className="profile-form__field-input" placeholder="Your Name" value={this.state.cardName} onChange={this.handleChangeCardName}/>
-                            </div>
-                            <div className="profile-form__field">
-                                <span className="profile-form__field-name">
-                                    Номер карты
-                                </span>
-                                <input name="cardNumber" type="text" className="profile-form__field-input" placeholder="0000 0000 0000 0000" value={this.state.cardNumber} onChange={this.handleChangeCardNumber}/>
-                            </div>
-                            <div className="profile-form__columns">
-                                <div className="profile-form__column profile-form__column_first">
-                                    <div className="profile-form__field">
-                                        <span className="profile-form__field-name">
-                                            MM/YY
-                                        </span>
-                                        <input name="expiryDate" type="text" className="profile-form__field-input" placeholder="MM/YY" value={this.state.expiryDate} onChange={this.handleChangeExpiryDate}/>
-                                    </div>
-                                </div>
-                                <div className="profile-form__column profile-form__column_second">
-                                    <div className="profile-form__field">
-                                        <span className="profile-form__field-name">
-                                            CVC
-                                        </span>
-                                        <input name="cvc" type="text" className="profile-form__field-input" placeholder="CVC" value={this.state.cvc} onChange={this.handleChangeCvc}/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="profile-form__column profile-form__column_right">
-                            <div className="profile-form__card">
-                                <div className="profile-form__card-header-row">
-                                    <div className="profile-form__card-logo"></div>
-                                    <div className="profile-form__card-date">
-                                        {this.props.expiryDate}
-                                    </div>
-                                </div>    
-                                <div className="profile-form__card-number">
-                                    {this.props.cardNumber}
-                                </div>
-                                <div className="profile-form__card-footer-row">
-                                    <div className="profile-form__chip-logo"></div>
-                                    <div className="profile-form__mc-logo">
-                                        <div className="profile-form__ellipse" />
-                                        <div className="profile-form__ellipse" />
-                                    </div>
-                                </div>  
-                            </div>
-                        </div>
+    });
+  
+    return (
+      <section className="tx-page tx-page-profile">
+        <div className="tx-page-content">
+          <Container maxWidth="md">
+            <div className="tx-box">
+              <h2 className="ac">Профиль</h2>
+              <p className="ac">Способ оплаты</p>
+              <form
+                onSubmit={handleSubmit(handleForm)}
+                className="tx-form"
+                data-testid="profile-form"
+              >
+                <Grid container spacing={3}>
+                  <Grid item xs={6}>
+                    <div className="tx-card">
+                      <div className="tx-line tx-mclogo">
+                        <MCIcon />
+                      </div>
+                      <div className="tx-line tx-full">
+                        <TextField
+                          label="Номер карты"
+                          type="text"
+                          name="cardInput"
+                          inputRef={registration}
+                          error={!!errors.cardInput}
+                          helperText={
+                            errors.cardInput && errors.cardInput.message
+                          }
+                          inputProps={{
+                            'data-testid': 'profile-input'
+                          }}
+                        />
+                      </div>
+                      <div className="tx-line">
+                        <TextField
+                          label="Срок действия"
+                          type="text"
+                          name="expiresInput"
+                          inputRef={registration}
+                          error={!!errors.expiresInput}
+                          helperText={
+                            errors.expiresInput && errors.expiresInput.message
+                          }
+                        />
+                      </div>
                     </div>
-                    <input data-testid="profile-form__submit" type="submit" value="Сохранить" className="profile-form__submit"/>
-                </form>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <div className="tx-card">
+                      <div className="tx-line tx-full">
+                        <TextField
+                          label="Имя владельца"
+                          type="text"
+                          name="holderInput"
+                          inputRef={registration}
+                          error={!!errors.holderInput}
+                          helperText={
+                            errors.holderInput && errors.holderInput.message
+                          }
+                        />
+                      </div>
+                      <div className="tx-line">
+                        <TextField
+                          label="CVC"
+                          type="text"
+                          name="cvcInput"
+                          inputRef={registration}
+                          error={!!errors.cvcInput}
+                          helperText={errors.cvcInput && errors.cvcInput.message}
+                        />
+                      </div>
+                    </div>
+                  </Grid>
+                </Grid>
+                <div className="tx-line ac">
+                  <Button type="submit" data-testid="profile-submit">
+                    <span>Сохранить</span>
+                    {loading ? <span className="tx-loader"></span> : null}
+                  </Button>
+                </div>
+                <div className="tx-line">
+                  <span className="tx-error">{error}</span>
+                </div>
+              </form>
             </div>
-        )
-    }
-}
-
-export const ProfileFormWithAuth = connect(
-    state => ({
-        cardNumber: state.card.cardNumber,
-        cardName: state.card.cardName,
-        expiryDate: state.card.expiryDate,
-        cvc: state.card.cvc
-    }),
-    { saveCard, getCard }
-)(ProfileForm);
+          </Container>
+        </div>
+      </section>
+    );
+  };
+  
+  const mapStateToProps = state => ({
+    card: state.user.card,
+    error: state.user.errorProfile,
+    loading: state.user.loadingProfile
+  });
+  
+  const mapDispatchToProps = {
+    loadProfile, updateProfile
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm)

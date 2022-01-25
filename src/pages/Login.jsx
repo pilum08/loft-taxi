@@ -1,59 +1,100 @@
-import React, {Component} from 'react'
-import Logo from '../assets/Logo.svg'
-import {PropTypes} from 'prop-types'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { authenticate } from '../store/actions'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link, Navigate} from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { signInUser } from '../modules/user';
 
+import Container from '@material-ui/core/container';
+import Grid from '@material-ui/core/grid';
+import TextField from '@material-ui/core/textfield';
+import Button from '@material-ui/core/button';
+import { Logo } from 'loft-taxi-mui-theme';
 
-export class Login extends Component {
-   
-  authenticate= (event)=> {
-    event.preventDefault()
-    const {userName, password} = event.target
-    this.props.authenticate(userName.value, password.value)
-  }
-    
-      render() {
-        return (
-            <>
-            <div className="sign-up">
-                 <div className="logo" style={{backgroundImage:`url(${Logo})`}}>
-                    <div className="logo__text">LoftTaxi</div>
-                </div>
-                <h1 className='sign-up__title'>Войти</h1>
-               {this.props.isLoggedIn ? (
-                   <Link to= 'map'>Войти</Link>
-                  
-               ) : (
-                <form onSubmit={this.authenticate} className='sign-up__form'>
-                    <label htmlFor="email">Имя пользователя*</label>
-                    <input className='sign-up__input' id='userName' type='text' name="userName" />
-                    <label htmlFor="password">Пароль*</label>
-                    <input className='sign-up__input' id="password" type="password" name="password" />
-                    <button type='submit' className='sign-up__button' >Войти</button>
-                  </form>
-               )}
-            <div className="sing-up__footer">
-                <span className='sing-up__footer-text'>Новый пользователь?</span>
-                <Link to='registration'>Зарегистрируйтесь</Link>
-            </div>
-            </div>
-            </>
-            
-            
-        )
-      }
-    
-    
-}
-Login.propTypes={
-    isLoggedIn:PropTypes.bool,
-    logIn: PropTypes.func,
-    navigate:PropTypes.func
+const LoginPage = ({ signInUser, isLoggedIn, error, loading }) => {
+  const handleForm = ({ loginInput, passwordInput }) => {
+    signInUser({
+      email: loginInput,
+      password: passwordInput
+    });
+  };
 
-}
-export const LoginWithAuth=connect(
-  (state) => ({isLoggedIn:state.auth.isLoggedIn}),
-  { authenticate }
-) (Login)
+  
+
+  const { register, handleSubmit } = useForm()
+
+  return (
+    <section className="tx-page tx-page-login">
+      <div className="tx-page-content">
+        <Container maxWidth="md">
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <div className="tx-logo-wr">
+                <Logo />
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div className="tx-box">
+                <h2>Войти</h2>
+                {isLoggedIn ? (
+                  <p>Добро пожаловать!</p>
+                ) : (
+                  <>
+                    <p>
+                      Новый пользователь?{' '}
+                      <Link to="/registration" className="tx-link">
+                        Зарегистрируйтесь
+                      </Link>
+                    </p>
+                    <form
+                      onSubmit={handleSubmit(handleForm)}
+                      className="tx-form"
+                      data-testid="login-form"
+                    >
+                      <div className="tx-line tx-single">
+                        <TextField
+                          {...register("loginInput")}
+              
+                          inputProps={{
+                            'data-testid': 'login-input'
+                          }}
+                        />
+                      </div>
+                      <div className="tx-line tx-single">
+                        <TextField
+                        {...register("passwordInput")}
+                         
+                         
+                        />
+                      </div>
+                      <div className="tx-line ar">
+                        <Button type="submit" data-testid="login-submit">
+                          <span>Войти</span>
+                          {loading ? <span className="tx-loader"></span> : null}
+                        </Button>
+                      </div>
+                      <div className="tx-line">
+                        <span className="tx-error">{error}</span>
+                      </div>
+                    </form>
+                  </>
+                )}
+              </div>
+            </Grid>
+          </Grid>
+        </Container>
+      </div>
+    </section>
+  );
+};
+
+const mapStateToProps = state => ({
+  isLoggedIn: state.user.isLoggedIn,
+  error: state.user.errorSignIn,
+  loading: state.user.loadingSignIn
+});
+
+const mapDispatchToProps = {
+  signInUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
