@@ -60,6 +60,7 @@ const RegisterPage = ({ signUpUser, isLoggedIn, loading }) => {
                     >
                       <div className="tx-line tx-single">
                         <TextField
+                        label="Электронная почта"
                          {...register("loginInput")}
                          
                           inputProps={{
@@ -69,14 +70,18 @@ const RegisterPage = ({ signUpUser, isLoggedIn, loading }) => {
                       </div>
                       <div className="tx-line">
                         <TextField
+                        label="Имя"
                            {...register("nameInput")}
                         />
                         <TextField
-                           {...register("nameInput")}
+                        label="Фамилия"
+                           {...register("surnameInput")}
                         />
                       </div>
                       <div className="tx-line tx-single">
                         <TextField
+                        label="Пароль"
+                        type="password"
                     {...register("passwordInput")}
                         />
                       </div>

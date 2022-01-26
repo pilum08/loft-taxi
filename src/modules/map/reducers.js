@@ -16,6 +16,13 @@ const route = handleActions(
   },
   []
 );
+const clearRoute = handleActions(
+  {
+    [actions.clearRouteMap]: (_state, action) => action.payload.clearRoute
+  },
+  []
+);
+
 
 const mapError = handleActions(
   {
@@ -44,5 +51,6 @@ export default combineReducers({
   addresses,
   route,
   mapError,
-  mapLoading
+  mapLoading,
+  clearRoute
 });

@@ -17,7 +17,7 @@ const Profile = ({
 }) => {
   useEffect(() => {
     loadProfileUser();
-  });
+  },[]);
 
   const handleForm = ({ cardInput, expiresInput, holderInput, cvcInput }) => {
     updateProfileUser({
@@ -60,7 +60,8 @@ const Profile = ({
                     </div>
                     <div className="tx-line tx-full">
                       <TextField
-                      {...register("cardInput")}
+                      label='Номер карты'
+                      {...register("cardInput",)}
                         inputProps={{
                           'data-testid': 'profile-input'
                         }}
@@ -68,7 +69,8 @@ const Profile = ({
                     </div>
                     <div className="tx-line">
                       <TextField
-                      {...register("holderInput")}
+                      label='Срок действия'
+                      {...register("expiresInput")}
                       />
                     </div>
                   </div>
@@ -77,11 +79,13 @@ const Profile = ({
                   <div className="tx-card">
                     <div className="tx-line tx-full">
                       <TextField
+                      label='Имя владельца'
                       {...register("holderInput")}
                       />
                     </div>
                     <div className="tx-line">
                       <TextField
+                      label='CVC'
                      {...register("cvcInput")}
                       />
                     </div>

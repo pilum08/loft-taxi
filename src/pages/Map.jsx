@@ -10,65 +10,7 @@ import { connect } from "react-redux";
 import { Button, Select, InputLabel, MenuItem } from '@material-ui/core';
 import '../styles/mapbox-gl.css';
 
-const createMap = container => {
-  MapboxGl.accessToken =
-  'pk.eyJ1IjoicGlsdW0wOCIsImEiOiJja3hsdjR6MjYwdTJpMnFvYjA5NjRkZ29zIn0.4Pgbxqu9nM0pJioKycXZrQ'
 
-  const map = new MapboxGl.Map({
-    container: container,
-    style: 'mapbox://styles/mapbox/light-v10',
-    center: [30.315868, 59.939095],
-    zoom: 12
-  });
-
-  return map;
-};
-
-const showRoute = (map, route) => {
-  map.flyTo({
-    center: route[0],
-    zoom: 15
-  });
-
-  const layer = map.getLayer('route');
-
-  if (layer) {
-    map.getSource('route').setData({
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'LineString',
-        coordinates: route
-      }
-    });
-  } else {
-    map.addSource('route', {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: route
-        }
-      }
-    });
-
-    map.addLayer({
-      id: 'route',
-      type: 'line',
-      source: 'route',
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round'
-      },
-      paint: {
-        'line-color': '#ffc617',
-        'line-width': 8
-      }
-    });
-  }
-};
 
 const Map = (props) => {
     const mapContainer = useRef(null);
@@ -133,6 +75,7 @@ const Map = (props) => {
         default:
       }
     };
+  
   
     return props.isLoggedIn ? (
       <>
@@ -206,6 +149,66 @@ const Map = (props) => {
         </div>
       </>
     ) : <Navigate replace to='/'/>
+  };
+
+  const createMap = container => {
+    MapboxGl.accessToken =
+    'pk.eyJ1IjoicGlsdW0wOCIsImEiOiJja3hsdjR6MjYwdTJpMnFvYjA5NjRkZ29zIn0.4Pgbxqu9nM0pJioKycXZrQ'
+  
+    const map = new MapboxGl.Map({
+      container: container,
+      style: 'mapbox://styles/mapbox/light-v10',
+      center: [30.315868, 59.939095],
+      zoom: 12
+    });
+  
+    return map;
+  };
+  
+  const showRoute = (map, route) => {
+    map.flyTo({
+      center: route[0],
+      zoom: 15
+    });
+  
+    const layer = map.getLayer('route');
+  
+    if (layer) {
+      map.getSource('route').setData({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: route
+        }
+      });
+    } else {
+      map.addSource('route', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: route
+          }
+        }
+      });
+  
+      map.addLayer({
+        id: 'route',
+        type: 'line',
+        source: 'route',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#ffc617',
+          'line-width': 8
+        }
+      });
+    }
   };
   
   export default connect(

@@ -52,6 +52,7 @@ const LoginPage = ({ signInUser, isLoggedIn, error, loading }) => {
                     >
                       <div className="tx-line tx-single">
                         <TextField
+                        label='Логин'
                           {...register("loginInput")}
               
                           inputProps={{
@@ -61,6 +62,8 @@ const LoginPage = ({ signInUser, isLoggedIn, error, loading }) => {
                       </div>
                       <div className="tx-line tx-single">
                         <TextField
+                        label='Пароль'
+                        type='password'
                         {...register("passwordInput")}
                          
                          
