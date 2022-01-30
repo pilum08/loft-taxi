@@ -75,7 +75,18 @@ const Map = (props) => {
         default:
       }
     };
-  
+  const newOrder=(map)=>{
+    setRouteShown(false)
+    map.flyTo({
+      center:  [30.315868, 59.939095],
+      zoom: 12
+    });
+    setAddress1('')
+    setAddress2('')
+    map.getLayer('route')
+    map.removeLayer('route')
+     map.removeSource('route')
+  }
   
     return props.isLoggedIn ? (
       <>
@@ -87,7 +98,7 @@ const Map = (props) => {
             routeShown ? (
               <p>
                 Такси едет к вам.{' '}
-                <span onClick={() => setRouteShown(false)} className="tx-link">
+                <span onClick={() =>  newOrder(map)} className="tx-link">
                   Повторить заказ
                 </span>
               </p>
@@ -171,44 +182,33 @@ const Map = (props) => {
       zoom: 15
     });
   
-    const layer = map.getLayer('route');
+    map.getLayer('route');
   
-    if (layer) {
-      map.getSource('route').setData({
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: route
-        }
-      });
-    } else {
-      map.addSource('route', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates: route
-          }
-        }
-      });
-  
+    
       map.addLayer({
-        id: 'route',
-        type: 'line',
-        source: 'route',
+        id: "route",
+        type: "line",
+        source: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "LineString",
+              coordinates:route
+            }
+          }
+        },
         layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
+          "line-join": "round",
+          "line-cap": "round"
         },
         paint: {
-          'line-color': '#ffc617',
-          'line-width': 8
+          "line-color": "#ffc617",
+          "line-width": 8
         }
       });
-    }
+    
   };
   
   export default connect(
