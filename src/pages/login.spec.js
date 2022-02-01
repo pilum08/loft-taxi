@@ -1,23 +1,31 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { BrowserRouter } from 'react-router-dom';
 import { render} from '@testing-library/react';
-import initStore from '../../store';
 import LoginPage from './login';
-require('mutationobserver-shim');
+
+const mockStore = {
+  getState: () => ({
+    user: {
+      isLoggedIn: false,
+      loadingSignIn: false,
+      errorSignIn: false,
+    },
+  }),
+  subscribe: () => {},
+  dispatch: () => {
+
+  },
+}
 
 describe('Login Page', () => {
-  const store = initStore();
-  const history = createMemoryHistory();
-
   it('Renders correctly', () => {
     const { queryByTestId, queryAllByText } = render(
-      <Router history={history}>
-        <Provider store={store}>
+      <BrowserRouter>
+        <Provider store={mockStore}>
           <LoginPage />
         </Provider>
-      </Router>
+      </BrowserRouter>
     );
 
     expect(queryByTestId('login-form')).toBeTruthy();
