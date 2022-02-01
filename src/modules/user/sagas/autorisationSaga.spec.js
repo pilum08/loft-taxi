@@ -1,15 +1,15 @@
-import { recordSaga } from "../../recordSaga";
+import  recordSaga  from "../../recordSaga";
 import { watchSignIn } from "./authorizationSaga";
-import { signIn } from '../actions';
+import { signInUser } from '../actions';
 
 
 jest.mock("../../../api", () => ({ userLogin: jest.fn(() => true) }));
-describe('authSaga', () => {
-  describe('SIGN_IN', () => {
+describe('authorisationSaga', () => {
+  describe('SIGN_IN_USER', () => {
     it('authorisation', async () => {
       const dispatched = await recordSaga(
         watchSignIn,
-        signIn('testlogin', 'testpassword')
+        signInUser('testlogin', 'testpassword')
       )
       expect(dispatched).toEqual([
         {
