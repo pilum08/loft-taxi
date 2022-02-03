@@ -1,21 +1,28 @@
 import  recordSaga  from "../../recordSaga";
-import { watchSignIn } from "./authorizationSaga";
+import {authSaga} from  "./authorizationSaga";
 import { signInUser } from '../actions';
+import {signIn} from '../../../api'
 
 
-jest.mock("../../../api", () => ({ userLogin: jest.fn(() => true) }));
-describe('authorisationSaga', () => {
-  describe('SIGN_IN_USER', () => {
-    it('authorisation', async () => {
-      const dispatched = await recordSaga(
-        watchSignIn,
-        signInUser('testlogin', 'testpassword')
-      )
-      expect(dispatched).toEqual([
-        {
-          type: "SIGN_IN_USER_SUCCESS"
+jest.mock("../../../api");
+
+describe("authorisationSaga test", () => {
+  it("authorisation", async () => {
+    signIn.mockImplementation(() => ({"success":true,"token":"testtoken"}));
+    const dispatched = await recordSaga(
+      authSaga,
+        signInUser({login: "testLogin", password: "testPassword"})
+    )
+    expect(dispatched).toEqual([
+      {
+        type: 'SIGN_IN_USER_SUCCESS',
+        payload:{
+          token:'testtoken',
+          success:true,
         }
-      ])
-    })
+        
+        
+      }
+    ])
   })
 })
